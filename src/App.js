@@ -1,22 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import "./css/App.css";
+
+import { useDispatch, useSelector } from "react-redux";
+import { toggleLoading } from "./store/features/loading/loadingSlice";
+import selectLoading from "./store/features/loading/loadingSelector";
+import { fetchTodoById } from "./store/features/todo/todoSlice";
+import { useEffect } from "react";
 
 function App() {
+  const dispatch = useDispatch();
+  const isLoading = useSelector(selectLoading); // Renamed the variable here
+
+  const handleToggleLoading = () => {
+    dispatch(toggleLoading());
+  };
+
+  useEffect(() => {
+    dispatch(fetchTodoById(1));
+  }, [dispatch]);
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h2>Loading is {isLoading ? "true" : "false"}</h2>
+        <button onClick={handleToggleLoading}> Toggle Loading</button>
       </header>
     </div>
   );
